@@ -22,14 +22,11 @@ const App = () => {
   const updateComplete = (taskToComplete) => {
     const updateTasks = tasks.map((task) => {
       if (task.id === taskToComplete.id) {
-        console.log('after the change', taskToComplete.isComplete);
         return taskToComplete;
       }
       return task;
     });
-    console.log(tasks);
     setTasks(updateTasks);
-    console.log(tasks);
   };
 
   return (

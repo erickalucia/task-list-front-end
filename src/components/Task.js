@@ -5,8 +5,6 @@ import './Task.css';
 
 const Task = (props) => {
   const updateTaskComplete = () => {
-    console.log('updateTaskComplete is called');
-    console.log('before the change', props.isComplete);
     props.updateComplete({ ...props, isComplete: !props.isComplete });
   };
 
