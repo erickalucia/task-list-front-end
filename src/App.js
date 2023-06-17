@@ -1,7 +1,7 @@
 import React from 'react';
+import { useState } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
-import { useState } from 'react';
 
 const TASKS = [
   {
@@ -17,27 +17,33 @@ const TASKS = [
 ];
 
 const App = () => {
-
   const [tasks, setTasks] = useState(TASKS);
 
   const updateComplete = (taskToComplete) => {
-    const updateTasks = tasks.map(task => {
+    const updateTasks = tasks.map((task) => {
       if (task.id === taskToComplete.id) {
+        console.log('after the change', taskToComplete.isComplete);
         return taskToComplete;
-      } return task;
+      }
+      return task;
     });
-    setTasks(updateTasks); 
+    console.log(tasks);
+    setTasks(updateTasks);
+    console.log(tasks);
   };
 
   return (
-    <div className="App">
+    <section className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div> <TaskList tasks={TASKS} updateComplete={updateComplete}/></div>
+        <section>
+          {' '}
+          <TaskList tasks={TASKS} updateComplete={updateComplete} />
+        </section>
       </main>
-    </div>
+    </section>
   );
 };
 
