@@ -40,7 +40,7 @@ const App = () => {
       <main>
         <section>
           {' '}
-          <TaskList tasks={TASKS} updateComplete={updateComplete} />
+          <TaskList tasks={tasks} updateComplete={updateComplete} />
         </section>
       </main>
     </section>
