@@ -18,16 +18,20 @@ import axios from 'axios';
 // ];
 
 const App = () => {
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState([]);
 
   const loadTasks = () => {
     axios
-      .get('https://task-list-api-c17.herokuapp.com/tasks')
+      .get('https://task-list-api-c17.onrender.com/tasks')
+      // .get('https://my-task-list-api.onrender.com/tasks')
       .then((response) => {
-        const initialTaskData = [];
-        response.data.forEach((task) => {
-          initialTaskData.push(task);
+        // const initialTaskData = [];
+        // response.data.forEach((task) => {
+        //   initialTaskData.push(task);
+        const initialTaskData = response.data.map((task) => {
+          return { ...task, isComplete: task.is_complete };
         });
+        console.log(initialTaskData);
         setTasks(initialTaskData);
       })
       .catch((error) => {
@@ -35,10 +39,9 @@ const App = () => {
       });
   };
 
-    useEffect( () => {
-      loadTasks();
-    }, []);
-
+  useEffect(() => {
+    loadTasks();
+  }, []);
 
   const updateComplete = (taskToComplete) => {
     const updateTasks = tasks.map((task) => {
@@ -49,7 +52,6 @@ const App = () => {
     });
     setTasks(updateTasks);
   };
-
 
   return (
     <section className="App">
