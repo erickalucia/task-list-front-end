@@ -1,23 +1,44 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
+import axios from 'axios';
 
-const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
-];
+// const TASKS = [
+//   {
+//     id: 1,
+//     title: 'Mow the lawn',
+//     isComplete: false,
+//   },
+//   {
+//     id: 2,
+//     title: 'Cook Pasta',
+//     isComplete: true,
+//   },
+// ];
 
 const App = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState();
+
+  const loadTasks = () => {
+    axios
+      .get('https://task-list-api-c17.herokuapp.com/tasks')
+      .then((response) => {
+        const initialTaskData = [];
+        response.data.forEach((task) => {
+          initialTaskData.push(task);
+        });
+        setTasks(initialTaskData);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  };
+
+    useEffect( () => {
+      loadTasks();
+    }, []);
+
 
   const updateComplete = (taskToComplete) => {
     const updateTasks = tasks.map((task) => {
@@ -28,6 +49,7 @@ const App = () => {
     });
     setTasks(updateTasks);
   };
+
 
   return (
     <section className="App">
