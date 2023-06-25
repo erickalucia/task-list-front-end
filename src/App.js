@@ -22,8 +22,8 @@ const App = () => {
 
   const loadTasks = () => {
     axios
-      .get('https://task-list-api-c17.onrender.com/tasks')
-      // .get('https://my-task-list-api.onrender.com/tasks')
+      // .get('https://task-list-api-c17.onrender.com/tasks')
+      .get('https://my-task-list-api.onrender.com/tasks')
       .then((response) => {
         // const initialTaskData = [];
         // response.data.forEach((task) => {
