@@ -25,9 +25,6 @@ const App = () => {
       // .get('https://task-list-api-c17.onrender.com/tasks')
       .get('https://my-task-list-api.onrender.com/tasks')
       .then((response) => {
-        // const initialTaskData = [];
-        // response.data.forEach((task) => {
-        //   initialTaskData.push(task);
         const initialTaskData = response.data.map((task) => {
           return { ...task, isComplete: task.is_complete };
         });
@@ -43,11 +40,26 @@ const App = () => {
     loadTasks();
   }, []);
 
+  const changeCompleteRequest = (taskId, taskCompleteStatus) => {
+    let patchURL = null;
+    if (taskCompleteStatus) {
+      patchURL = `https://my-task-list-api.onrender.com/tasks/${taskId}/mark_complete`;
+    } else
+      patchURL = `https://my-task-list-api.onrender.com/tasks/${taskId}/mark_incomplete`;
+    axios
+      .patch(patchURL)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const updateComplete = (taskToComplete) => {
     const updateTasks = tasks.map((task) => {
-      if (task.id === taskToComplete.id) {
-        return taskToComplete;
-      }
+      if (task.id === taskToComplete.id) return taskToComplete;
+      changeCompleteRequest(taskToComplete.id, taskToComplete.isComplete);
       return task;
     });
     setTasks(updateTasks);
