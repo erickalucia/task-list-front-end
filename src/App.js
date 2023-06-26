@@ -24,14 +24,14 @@ const App = () => {
     axios
       // .get('https://task-list-api-c17.onrender.com/tasks')
       .get('https://my-task-list-api.onrender.com/tasks')
-      .then((response) => {
-        const initialTaskData = response.data.map((task) => {
+      .then(response => {
+        const initialTaskData = response.data.map(task => {
           return { ...task, isComplete: task.is_complete };
         });
         console.log(initialTaskData);
         setTasks(initialTaskData);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('error', error);
       });
   };
@@ -40,7 +40,7 @@ const App = () => {
     loadTasks();
   }, []);
 
-  const changeCompleteRequest = (taskId, taskCompleteStatus) => {
+  const setTaskCompleteRequest = (taskId, taskCompleteStatus) => {
     let patchURL = null;
     if (taskCompleteStatus) {
       patchURL = `https://my-task-list-api.onrender.com/tasks/${taskId}/mark_complete`;
@@ -48,21 +48,26 @@ const App = () => {
       patchURL = `https://my-task-list-api.onrender.com/tasks/${taskId}/mark_incomplete`;
     axios
       .patch(patchURL)
-      .then(function (response) {
+      .then(response => {
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
       });
   };
 
-  const updateComplete = (taskToComplete) => {
-    const updateTasks = tasks.map((task) => {
+  const updateComplete = taskToComplete => {
+    const updateTasks = tasks.map(task => {
       if (task.id === taskToComplete.id) return taskToComplete;
-      changeCompleteRequest(taskToComplete.id, taskToComplete.isComplete);
+      setTaskCompleteRequest(taskToComplete.id, taskToComplete.isComplete);
       return task;
     });
     setTasks(updateTasks);
+  };
+
+  const deleteTask = taskToDelete => {
+    const newTasks = tasks.filter(task => task.id !== taskToDelete.id);
+    setTasks(newTasks);
   };
 
   return (
@@ -73,7 +78,11 @@ const App = () => {
       <main>
         <section>
           {' '}
-          <TaskList tasks={tasks} updateComplete={updateComplete} />
+          <TaskList
+            tasks={tasks}
+            updateComplete={updateComplete}
+            deleteTask={deleteTask}
+          />
         </section>
       </main>
     </section>
