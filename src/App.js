@@ -65,8 +65,20 @@ const App = () => {
     setTasks(updateTasks);
   };
 
+  const deleteTaskRequest = taskId => {
+    axios
+      .delete(`https://my-task-list-api.onrender.com/tasks/${taskId}`)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const deleteTask = taskToDelete => {
     const newTasks = tasks.filter(task => task.id !== taskToDelete.id);
+    deleteTaskRequest(taskToDelete.id);
     setTasks(newTasks);
   };
 
