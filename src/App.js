@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import TaskList from './components/TaskList.js';
+import NewTaskForm from './components/NewTaskForm';
 
 // const TASKS = [
 //   {
@@ -81,6 +82,37 @@ const App = () => {
     setTasks(newTasks);
   };
 
+  const taskPostRequest = taskToAdd => {
+    axios
+      .post('https://my-task-list-api.onrender.com/tasks', {
+        title: taskToAdd.title,
+        description: taskToAdd.description,
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.data);
+      });
+  };
+
+  const getOneTaskRequest = taskId => {
+    axios
+      .get(`https://my-task-list-api.onrender.com/tasks/${taskId}`)
+      .then(response => {
+        return { ...response.data };
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
+
+  const addTask = taskToAdd => {
+    taskPostRequest(taskToAdd);
+    const newTask = { ...getOneTaskRequest(taskToAdd.id), isComplete: false };
+    setTasks([...tasks, newTask]);
+  };
+
   return (
     <section className="App">
       <header className="App-header">
@@ -88,12 +120,12 @@ const App = () => {
       </header>
       <main>
         <section>
-          {' '}
           <TaskList
             tasks={tasks}
             updateComplete={updateComplete}
             deleteTask={deleteTask}
           />
+          <NewTaskForm addTask={addTask} />
         </section>
       </main>
     </section>
