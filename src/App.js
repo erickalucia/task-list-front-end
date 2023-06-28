@@ -90,27 +90,29 @@ const App = () => {
       })
       .then(response => {
         console.log(response.data);
+        axios
+          .get(
+            `https://my-task-list-api.onrender.com/tasks/${response.data.task.id}`
+          )
+          .then(response => {
+            console.log(response.data.task);
+            setTasks([...tasks, response.data.task]);
+          })
+          .catch(error => {
+            console.log('error', error);
+          });
       })
       .catch(error => {
         console.log(error.data);
       });
   };
 
-  const getOneTaskRequest = taskId => {
-    axios
-      .get(`https://my-task-list-api.onrender.com/tasks/${taskId}`)
-      .then(response => {
-        return { ...response.data };
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  };
-
   const addTask = taskToAdd => {
     taskPostRequest(taskToAdd);
-    const newTask = { ...getOneTaskRequest(taskToAdd.id), isComplete: false };
-    setTasks([...tasks, newTask]);
+    // console.log(taskToAdd.id);
+    // const newTask = { ...getOneTaskRequest(taskToAdd.id), isComplete: false };
+    // console.log(newTask);
+    // setTasks([...tasks, newTask]);
   };
 
   return (
